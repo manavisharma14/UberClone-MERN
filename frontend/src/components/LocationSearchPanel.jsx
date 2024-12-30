@@ -1,4 +1,5 @@
 import React from 'react'
+import { useRef } from 'react';
 
 const LocationSearchPanel = (props) => {
 

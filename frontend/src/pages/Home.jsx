@@ -6,6 +6,7 @@ import { gsap } from 'gsap'; // Import gsap here
 import 'remixicon/fonts/remixicon.css'
 import LocationSearchPanel from '../components/LocationSearchPanel';
 import VehiclePanel from '../components/VehiclePanel';
+import ConfirmRide from '../components/ConfirmRide';
 
 
 const Home = () => {
@@ -15,7 +16,9 @@ const Home = () => {
   const panelRef = useRef(null);  
   const vehiclePanelRef = useRef(null);
   const panelCloseRef = useRef(null); 
+  const confirmRidePanelRef = useRef(null);
   const [vehiclePanel, setVehiclePanel] = useState(false ); 
+  const [confirmRidePanel, setConfirmRidePanel] = useState(false);
 
   const submitHandler = (e) => {
     e.preventDefault()
@@ -57,6 +60,19 @@ const Home = () => {
 }
   }, [vehiclePanel])
   
+  useGSAP(() => {
+    
+    if (confirmRidePanel) {
+      gsap.to(confirmRidePanelRef.current, {
+      transform: 'translateY(0)' 
+    })
+  } else {
+    gsap.to(confirmRidePanelRef.current, {
+      transform: 'translateY(100%)'
+  })
+}
+  }, [confirmRidePanel])
+
   return (
     <div className='h-screen relative overflow-hidden'>
       <img className='w-16 absolute left-5 top-5' src='https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/Uber_logo_2018.png/1600px-Uber_logo_2018.png' alt=""/>
@@ -111,9 +127,18 @@ const Home = () => {
           <LocationSearchPanel setPanelOpen={setPanelOpen} setVehiclePanel={setVehiclePanel} />
         </div>
       </div>
-      <div ref={vehiclePanelRef} className='fixed w-full z-10 bottom-0 bg-white px-3 py-10 pt-14 translate-y-full'>    
-          <VehiclePanel setVehiclePanel={setVehiclePanel}/>
+      <div ref={vehiclePanelRef} className='fixed w-full z-10 bottom-0 bg-white px-3 py-10 pt-12 translate-y-full'>    
+          <VehiclePanel setConfirmRidePanel={setConfirmRidePanel} setVehiclePanel={setVehiclePanel}/>
       </div>
+
+      <div ref={confirmRidePanelRef} className='fixed w-full z-10 bottom-0 bg-white px-3 py-6 pt-12 translate-y-full'>    
+          <ConfirmRide setConfirmRidePanel={setConfirmRidePanel} setVehiclePanel={setVehiclePanel}/>
+      </div>
+
+      <div className='fixed w-full z-10 bottom-0 bg-white px-3 py-6 pt-12 translate-y-full'>    
+
+      </div>
+
     </div>
   )
 }

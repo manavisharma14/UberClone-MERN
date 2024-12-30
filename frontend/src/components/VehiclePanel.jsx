@@ -1,4 +1,5 @@
 import React from 'react'
+import { useRef } from 'react'; 
 
 const VehiclePanel = (props) => {
   return (
@@ -8,7 +9,9 @@ const VehiclePanel = (props) => {
       }}><i className="text-3xl text-gray-200 ri-arrow-down-wide-line"></i></h5>
         <h3 className='text-2xl font-semibold'>Choose a Vehicle</h3>
 
-          <div className='flex border-2 active:border-black rounded-black mb-2 rounded-xl p-3 w-full flex items-center justify-between'>
+          <div onClick={()=>{
+            props.setConfirmRidePanel(true)
+          }} className='flex border-2 active:border-black rounded-black mb-2 rounded-xl p-3 w-full flex items-center justify-between'>
             <img className='h-12' src="https://www.uber-assets.com/image/upload/f_auto,q_auto:eco,c_fill,h_638,w_956/v1555367349/assets/d7/3d4b80-1a5f-4a8b-ac2b-bf6c0810f050/original/Final_XL.png" alt="" />
             <div className=' w-1/2'>
               <h4 className='font-medium text-lg'>UberGo <span><i className="ri-user-3-fill">4</i></span></h4>
