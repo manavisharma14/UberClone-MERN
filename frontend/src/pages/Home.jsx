@@ -4,13 +4,18 @@ import { useState } from 'react';
 import { useRef } from'react';
 import { gsap } from 'gsap'; // Import gsap here
 import 'remixicon/fonts/remixicon.css'
+import LocationSearchPanel from '../components/LocationSearchPanel';
+import VehiclePanel from '../components/VehiclePanel';
+
 
 const Home = () => {
   const [pickup, setPickup] = useState('');
   const [destination, setDestination ] = useState('');
   const [panelOpen, setPanelOpen ] = useState(false);
   const panelRef = useRef(null);  
+  const vehiclePanelRef = useRef(null);
   const panelCloseRef = useRef(null); 
+  const [vehiclePanel, setVehiclePanel] = useState(false ); 
 
   const submitHandler = (e) => {
     e.preventDefault()
@@ -19,8 +24,9 @@ const Home = () => {
   useGSAP(() => {
     if (panelOpen) {
       gsap.to(panelRef.current, {
-        height: '70%', // Enclose 70% in quotes as it is a percentage value.
-        opacity: 1
+        height: '70%',
+        padding: 24,
+         opacity: 1
       });
       gsap.to(panelCloseRef.current, {
         opacity: 1
@@ -28,20 +34,38 @@ const Home = () => {
 
     } else {
       gsap.to(panelRef.current, {
-        height: '0%', // Enclose 0% in quotes as well.
-        opacity: 1
+        height: '0%',
+        padding: 0,
+         opacity: 0
       });
       gsap.to(panelCloseRef.current, {
         opacity: 0
       });
     }
   }, [panelOpen]);
+
+  useGSAP(() => {
+    
+    if (vehiclePanel) {
+      gsap.to(vehiclePanelRef.current, {
+      transform: 'translateY(0)' 
+    })
+  } else {
+    gsap.to(vehiclePanelRef.current, {
+      transform: 'translateY(100%)'
+  })
+}
+  }, [vehiclePanel])
   
   return (
-    <div className='h-screen relative'>
+    <div className='h-screen relative overflow-hidden'>
       <img className='w-16 absolute left-5 top-5' src='https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/Uber_logo_2018.png/1600px-Uber_logo_2018.png' alt=""/>
 
-      <div className='h-screen w-screen'>
+      <div 
+      onClick={()=>{
+        setVehiclePanel(false );
+      } }
+      className='h-screen w-screen'>
         <img className="h-full w-full object-cover" src="https://miro.medium.com/v2/resize:fit:1400/0*gwMx05pqII5hbfmX.gif" alt="" />
       </div>
       <div className='flex flex-col justify-end h-screen absolute top-0 w-full '>
@@ -83,9 +107,12 @@ const Home = () => {
            placeholder='Add a drop-off location' />
         </form>
         </div>
-        <div ref={panelRef} className='opacity-0 bg-red-500 h-0'>
-
+        <div ref={panelRef} className='opacity-0 bg-white  h-0'>
+          <LocationSearchPanel setPanelOpen={setPanelOpen} setVehiclePanel={setVehiclePanel} />
         </div>
+      </div>
+      <div ref={vehiclePanelRef} className='fixed w-full z-10 bottom-0 bg-white px-3 py-10 pt-14 translate-y-full'>    
+          <VehiclePanel setVehiclePanel={setVehiclePanel}/>
       </div>
     </div>
   )
